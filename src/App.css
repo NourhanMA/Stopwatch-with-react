@@ -6,3 +6,57 @@
   margin: auto;
   padding-top: 40px;
 }
+
+.btns {
+  display: flex;
+  width: 50vw;
+  justify-content: space-around;
+  align-items: center;
+  margin: 3vw 0;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  width: 10vw;
+  height: 2.8vw;
+  font-size: 1vw;
+  color: #f7f7f7;
+  cursor: pointer;
+}
+
+button.start {
+  background-color: #74d632;
+}
+
+button.stop {
+  background-color: #d65332;
+}
+
+button.reset {
+  background-color: #000;
+}
+
+button.lap {
+  background-color: #323dd6;
+}
+button.disabled {
+  background-color: #6b6b6b;
+  pointer-events: none;
+}
+
+.list-row {
+  display: flex;
+  width: 40vw;
+  justify-content: space-evenly;
+  text-align: left;
+  /* margin-top: 3vw; */
+}
+.list-row p {
+  margin: 1vw auto;
+  width: calc(100% / 3);
+  text-align: center;
+  user-select: none;
+}
+
+/* .list-row  */

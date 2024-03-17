@@ -3,14 +3,19 @@ import React from "react";
 class Stopwatch extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { time: 0, laps: [], displayedTime: "00:00:00:00" };
+    this.state = {
+      time: 0,
+      laps: [],
+      displayedTime: "00:00:00:00",
+      starting: false,
+    };
   }
 
   componentDidMount() {}
   componentWillUnmount() {
     clearInterval(this.timer);
   }
-  tick = () => {
+  setData = () => {
     this.setState((state) => {
       return {
         time: state.time + 1,
@@ -20,22 +25,49 @@ class Stopwatch extends React.Component {
   };
 
   start = () => {
-    this.timer = setInterval(() => {
-      this.tick();
-      // this.newTime = this.formatTime(this.state.time);
-    }, 10);
+    this.setState((state) => {
+      return {
+        starting: !state.starting,
+      };
+    });
+    if (this.state.starting) {
+      clearInterval(this.timer);
+    } else {
+      this.timer = setInterval(() => {
+        this.setData();
+      }, 10);
+    }
   };
 
-  stop = () => {
+  reset = () => {
     clearInterval(this.timer);
-    this.setState({ time: 0, displayedTime: "00:00:00:00" });
-    this.newTime = 0;
+    this.setState({
+      time: 0,
+      displayedTime: "00:00:00:00",
+      laps: [],
+      starting: false,
+    });
   };
 
   lap = () => {
-    this.setState((state) => {
-      return { laps: [...state.laps, state.displayedTime] };
-    });
+    if (this.state.starting) {
+      let lap = 0;
+      this.setState((state) => {
+        if (state.laps.length > 0) {
+          lap = state.laps[state.laps.length - 1].total;
+        }
+        console.log(state);
+        return {
+          laps: [
+            ...state.laps,
+            {
+              lap: state.time - lap,
+              total: state.time,
+            },
+          ],
+        };
+      });
+    }
   };
 
   formatTime = (time) => {
@@ -62,12 +94,41 @@ class Stopwatch extends React.Component {
     return (
       <>
         <h1> {this.state.displayedTime}</h1>
-        <button onClick={this.start}>Start</button>
-        <button onClick={this.stop}>reset</button>
-        <button onClick={this.lap}>lap</button>
+        <div className="btns">
+          <button
+            className={this.state.starting ? "stop" : "start"}
+            onClick={this.start}
+          >
+            {this.state.starting ? "Stop" : "Start"}
+          </button>
+          <button className="reset" onClick={this.reset}>
+            Reset
+          </button>
+          <button
+            className={this.state.starting ? "lap" : "disabled"}
+            onClick={this.lap}
+          >
+            Lap
+          </button>
+        </div>
 
+        {this.state.laps.length != 0 ? (
+          <div className="list-row">
+            <p className="index">#</p>
+            <p>Lap time</p>
+            <p>Total time</p>
+          </div>
+        ) : (
+          ""
+        )}
         {this.state.laps.map((lap, i) => {
-          return <p key={`lap-${i}`}>{lap}</p>;
+          return (
+            <div className="list-row" key={`lap-${i + 1}`}>
+              <p className="index">{i + 1}</p>
+              <p>{this.formatTime(lap.lap)}</p>
+              <p>{this.formatTime(lap.total)}</p>
+            </div>
+          );
         })}
       </>
     );
