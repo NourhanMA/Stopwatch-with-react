@@ -2,7 +2,7 @@
   "name": "stopwatch",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://NourhanMA.github.io/Stopwatch-with-react",
+  "homepage": "https://nourhanma.github.io/Stopwatch-with-react/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
